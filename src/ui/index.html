@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 </head>
 <body>
+  <h3 class="title" >CALCULAR DATOS EN EXCEL POR MEDIO DE FILTROS</h3>
   <form id="uploadForm">
     <section class="container text-center upload ">
         <div class="card">
             <div class="row">
                 <div class="col-md-6 col-lg-6">
                   <div class="form-group">
-                    <label for="comparatorFile" class="comparator-file">Subir archivo comparador</label>
+                    <label for="comparatorFile" class="comparator-file sub-title">Subir archivo comparador</label>
                       <input 
                         type="file" 
                         name="UploadComparatorFile"
@@ -26,7 +27,7 @@
                 </div>
                 <div class="col-md-6 col-lg-6">
                   <div class="form-group">
-                    <label for="fileCompare" class="file-compare">Subir archivo a comparar</label>
+                    <label for="fileCompare" class="file-compare sub-title ">Subir archivo a comparar</label>
                       <input 
                         type="file" 
                         name="UploadFileCompared" 
@@ -37,30 +38,70 @@
                 </div>
             </div>
         </div>
-    </section>
-
-      <section class="container">
+    </section>  
+    <!-- <section class="filter container">
         <div class="row">
-            <div class="col-md-8 ">
-              <button class="btn btn-primary btn-sm">PROCESAR Y DESCARGAR</button>
-              </div>
-            </div>
+          <div class="col-lg-2">
+            <ul class="list-group" id="listColums">
+
+            </ul>
+          </div>
         </div>
-    </section>
-  </form>
-    <section class="container table-res">
-        <table class="table table-fixed" id="dtHorizontalVertical">
-            <thead id="resThead">
-              
-            </thead>
-            <tbody id="resTbody">
-              
-            </tbody>
-          </table>
+    </section> -->
+    <section class="container container-buttom">
+      <h5 class="color-item-h5">Más filtros:</h5>
+      <br>
+      <div class="row card">
+       <div class="col-md-12 col-lg-12">
+        <label for="itemCampo1" class="color-item">Campo</label>
+        <input type="text" name="item" id="itemCampo1" class="item-valor"> 
+        <select type="text" name="item" id="itemSelect1" class="item-select">
+          <option value=""></option>
+          <option value="&#x3C;">&#x3C;</option>
+          <option value="mayorQue">&#x3E;</option>
+          <option value="igual">=</option>
+          <option value="diferente">!=</option>
+        </select>
+        <label for="itemValor1" class="color-item">Valor</label>
+        <input type="text" name="item" id="itemValor1" class="item-valor">
+       </div>
+      </div>
+      <br>
+      <div class="row card">
+        <div class="col-md-12 col-lg-12">
+          <label for="itemCampo2" class="color-item">Campo</label>
+         <input type="text" name="item" id="itemCampo2" class="item-valor"> 
+         <label for="itemCampo3" class="color-item">Valor</label>
+         <input type="text" name="item" id="itemValor2" class="item-valor"> 
+         <select type="text" name="item" id="itemSelect2" class="item-select">
+           <option value="" ></option>
+           <option value="entre">&#x3C;...&#x3E;</option>
+         </select>
+         <label for="itenValor" class="color-item">Valor</label>
+         <input type="text" name="item" id="itemValor3" class="item-valor">
+        </div>
+       </div>
     </section>
     <div class="container mt-5 ">
       <pre id="json"></pre>
     </div>
+    
+
+      <section class="container container-buttom">
+        <div class="row">
+            <div class="col-md-12">
+              <button class="btn btn-primary mt-5">PROCESAR Y DESCARGAR</button>
+              </div>
+            </div>
+        </div>
+    </section>
+    
+  </form>
+   
+    <div id="toast">
+
+    </div>
+    
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

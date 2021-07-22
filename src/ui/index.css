@@ -1,3 +1,48 @@
+body{
+  background-image: url('./img/fondo5.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: auto;
+  /* overflow: hidden; */
+}
+.title{
+  color: #fff;
+  text-align: center;
+  margin: 20px 20px 10px 20px;
+}
+.sub-title{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+}
+.item-selec{
+  width: 10%;
+}
+.form-switch{
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.color-item{
+  color: rgb(1, 102, 68);
+}
+.item-valor{
+  width: 20%;
+}
+.card{
+  background-color: rgb(202, 217, 218) !important;
+}
+input, select{
+  border: none !important;
+  border-radius: 5px;
+}
+.form-check-label, .color-item-h5{
+  color: #fff;
+}
+.container-buttom{
+  text-align: center !important;
+  align-items: center !important;
+}
 .card{
     padding: 20px;
 }

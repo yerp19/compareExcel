@@ -1,5 +1,4 @@
-// The one and only way of getting global scope in all environments
-// https://stackoverflow.com/q/3277182/1008999
+
 var _global = typeof window === 'object' && window.window === window
   ? window : typeof self === 'object' && self.self === self
   ? self : typeof global === 'object' && global.global === global
