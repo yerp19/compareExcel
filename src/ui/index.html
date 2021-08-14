@@ -12,7 +12,10 @@
   <h3 class="title" >CALCULAR DATOS EN EXCEL POR MEDIO DE FILTROS</h3>
   <form id="uploadForm">
     <section class="container text-center upload ">
-        <div class="card">
+      <div class="text-center" id="spinner">
+      
+    </div>
+        <div class="card" id="card">
             <div class="row">
                 <div class="col-md-6 col-lg-6">
                   <div class="form-group">
@@ -51,46 +54,32 @@
     <section class="container container-buttom">
       <h5 class="color-item-h5">Más filtros:</h5>
       <br>
-      <div class="row card">
-       <div class="col-md-12 col-lg-12">
-        <label for="itemCampo1" class="color-item">Campo</label>
-        <input type="text" name="item" id="itemCampo1" class="item-valor"> 
-        <select type="text" name="item" id="itemSelect1" class="item-select">
-          <option value=""></option>
-          <option value="&#x3C;">&#x3C;</option>
-          <option value="mayorQue">&#x3E;</option>
-          <option value="igual">=</option>
-          <option value="diferente">!=</option>
-        </select>
-        <label for="itemValor1" class="color-item">Valor</label>
-        <input type="text" name="item" id="itemValor1" class="item-valor">
+      <div class="card">
+      <div class="row">
+       <div class="col-md-3 col-lg-3">
+        <label for="identification" class="color-item">Identificación =</label> 
+        <input type="text" name="identification-people" id="identification"  style="width: 50%; text-transform:uppercase;">
+       </div>
+       <div class="col-md-4 col-lg-4">
+          <label for="name" class="color-item">Nombre = </label>
+          <input type="text" name="name-people" id="name"  style="width: 70%; text-transform:uppercase;">
+       </div>
+       <div class="col-md-2 col-lg-2">
+        <label for="age" class="color-item">Edad =</label> 
+        <input type="text" name="older-age" id="age"  style="width: 50%;">
+       </div>
+       <div class="col-md-3 col-lg-3">
+        <label for="municipality" class="color-item">Municipio =</label> 
+        <input type="text" name="municipaly-people" id="municipality"  style="width: 50%; text-transform:uppercase;">
        </div>
       </div>
-      <br>
-      <div class="row card">
-        <div class="col-md-12 col-lg-12">
-          <label for="itemCampo2" class="color-item">Campo</label>
-         <input type="text" name="item" id="itemCampo2" class="item-valor"> 
-         <label for="itemCampo3" class="color-item">Valor</label>
-         <input type="text" name="item" id="itemValor2" class="item-valor"> 
-         <select type="text" name="item" id="itemSelect2" class="item-select">
-           <option value="" ></option>
-           <option value="entre">&#x3C;...&#x3E;</option>
-         </select>
-         <label for="itenValor" class="color-item">Valor</label>
-         <input type="text" name="item" id="itemValor3" class="item-valor">
-        </div>
-       </div>
+      </div>  
     </section>
-    <div class="container mt-5 ">
-      <pre id="json"></pre>
-    </div>
-    
 
       <section class="container container-buttom">
         <div class="row">
             <div class="col-md-12">
-              <button class="btn btn-primary mt-5">PROCESAR Y DESCARGAR</button>
+              <button type="submit" class="btn btn-primary mt-5">PROCESAR Y DESCARGAR</button>
               </div>
             </div>
         </div>
@@ -98,9 +87,6 @@
     
   </form>
    
-    <div id="toast">
-
-    </div>
     
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

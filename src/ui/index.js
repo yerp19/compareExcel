@@ -3,8 +3,8 @@ const UploadForm = document.getElementById('uploadForm')
 
 //importaciones de modulos, librerias y archivos
 const XLSX = require('xlsx');
-const { remote} = require('electron');
 const { saveAs } = require('./FileSaver');
+const { remote} = require('electron');
 const main = remote.require('./main');
 
 //archivos a procesar
@@ -12,28 +12,17 @@ const comparatorFile = document.getElementById('comparatorFile');
 const fileCompare = document.getElementById('fileCompare');
 
 //otros filtros
-
-
 function filterData() {
-    const itemCampo1 = document.getElementById('itemCampo1');
-    const itemSelect1 = document.getElementById('itemSelect1');
-    const itemValor1 = document.getElementById('itemValor1');
-
-    const itemCampo2 = document.getElementById('itemCampo2');
-    const itemSelect2 = document.getElementById('itemSelect2');
-    const itemValor2 = document.getElementById('itemValor2');
-    const itemValor3 = document.getElementById('itemValor3');
+    const name = document.getElementById('name');
+    const identification = document.getElementById('identification');
+    const municipality = document.getElementById('municipality');
+    const age = document.getElementById('age');
     var filter = {
-        itemCampo1 : itemCampo1.value,
-        itemSelect1: itemSelect1.value,
-        itemValor1: itemValor1.value,
-    
-        itemCampo2 : itemCampo2.value,
-        itemSelect2: itemSelect2.value,
-        itemValor2: itemValor2.value,
-        itemValor3: itemValor3.value,
+        name : name.value,
+        identification: identification.value,
+        municipality: municipality.value,
+        age : age.value,
     }
-
     return filter;
 }
 
@@ -41,32 +30,50 @@ function filterData() {
 //evento para enviar el formulario
 UploadForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-
     if(comparatorFile.files && comparatorFile.files[0] && fileCompare.files && fileCompare.files[0]){
         const file_compare = comparatorFile.files[0];
         const comparator_file = fileCompare.files[0];
 
         //notificacion de esperar descarga
+        
         main.notification('Procesando Información',"Espere a que el archivo de descargue, esto tardara dependiendo la cantidad de datos procesados ")
-
+        
         //funcion que compara los archivos
-        var resUploadFileCompared = main.uploadFileCompared(comparator_file, file_compare );
+        const resUploadFileCompared = await main.uploadFileCompared(comparator_file, file_compare );
+        console.log(resUploadFileCompared)
+        const spinner = document.getElementById('spinner')
+        
+        spinner.innerHTML = `
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+            </div>
+        `
         const resCombertExcelToJson = await CombertExcelToJson(resUploadFileCompared)
-        //console.log(resCombertExcelToJson)
-
+        
         //funcion descargar archivo final
-        //downloadAsExcel(resCombertExcelToJson)
+        if(resCombertExcelToJson === 'undefined' || resCombertExcelToJson === [])
+        {
+            UploadForm.reset();
+        }
+        else{
+           
+            downloadAsExcel(resCombertExcelToJson)
+            //document.getElementById("spinner").innerHTML = ``;
+            UploadForm.reset();
+        }
     }
     else{
         //notificacion si no hay archivos cargados
         main.notification('Error al cargar archivos',"Sin Archivo Seleccionado")
     }
 });
-
-
 //convertir a formato Json 
 const CombertExcelToJson = async (resUploadFileCompared) => {
+  
     const pathComparatorFile = resUploadFileCompared.pathComparatorFile;
+    console.log(pathComparatorFile)
     const pathFileCompare = resUploadFileCompared.pathFileCompare;
     //objeto del archivo de excel a comparar
     const filePathComparatorFile = XLSX.readFile(pathComparatorFile);
@@ -89,6 +96,7 @@ const CombertExcelToJson = async (resUploadFileCompared) => {
     return rescomparationFuction;
 }
 
+
 //hacer comparacion de datos y exportacion de datos calculados
 const comparationFuction = (resNameFilePathComparatorFile, resNameFilePathFileCompare) => {
     const filter = filterData()
@@ -99,40 +107,101 @@ const comparationFuction = (resNameFilePathComparatorFile, resNameFilePathFileCo
             arrayres.push(element);
         });
     }
-    if (typeof filter === 'object') {
-        if(filter.itemCampo1.length != 0  && filter.itemCampo1.length != 0 && filter.itemValor1.length != 0 && filter.itemCampo2.length != 0 && filter.itemValor2.length != 0 && filter.itemValor3.length != 0){
-            let validateCampo1 = filter.itemCampo1;
-            let validateValor1 = filter.itemValor1;
-            let validateCampo2 = filter.itemCampo1;
-            let validateValor2 = filter.itemValor2;
-            let validateValor3 = filter.itemValor3;
-
-            arrayres.forEach(element => {
-                //console.log(element)
-                for (const key in element) {
-                    let value = Object.values(element)
-                    //console.log(key === validateCampo1);
-                    if(key === validateCampo1){
-                        arrayres.filter(item =>  console.log(item.validateCampo1));
-                    }
-                }
-            });
-        }
-        else if(filter.itemCampo1.length === 0 && filter.itemValor1.length === 0 && filter.itemCampo2.length === 0 && filter.itemValor2.length === 0 && filter.itemValor3.length === 0){
+    if(typeof filter === 'object') {
+        if(filter.name.length === 0 && filter.identification.length === 0 && filter.municipality.length === 0 && filter.age.length === 0){
             return arrayres;
         }
-        else if(filter.itemCampo1.length != 0 && filter.itemValor1.length != 0 && filter.itemCampo2.length === 0 && filter.itemValor2.length === 0 && filter.itemValor3.length === 0){
-            let validateCampo1 = filter.itemCampo1;
-            let validateValor1 = filter.itemValor1;
-            
+        else if(filter.name.length != 0 && filter.identification.length === 0 && filter.municipality.length === 0 && filter.age.length === 0){
+            for (let i = 0; i < arrayres.length; i++) {
+                if(arrayres[i].primer_nombre){
+                    var resFilter = arrayres.filter(data => data.primer_nombre === filter.name ||  data.segundo_nombre === filter.name ||  data.primer_apellido === filter.name ||  data.segundo_apellido === filter.name);
+                    //console.log(resFilter)
+                    if(resFilter.length === 0 || resFilter[0] === []){
+                        main.notification('1: SIN NADA POR DESCARGAR',"Filtre por otros datos o No existen el campo en el archivo")
+                        break;
+                    }
+                    else{
+                        return resFilter
+                    }
+                }
+                else if(arrayres[i].primernombre){
+                    var resFilter =  arrayres.filter(data => data.primernombre === filter.name ||  data.segundonombre === filter.name ||  data.primerapellido === filter.name ||  data.segundoapellido === filter.name)
+                    console.log(resFilter)
+                    if(resFilter.length === 0 ){
+                        main.notification('SIN NADA POR DESCARGAR',"Filtre por otros datos o No existen el campo en el archivo")
+                        break;
+                    }
+                    else{
+                        return resFilter
+                    }
+                }
+                else{
+                    main.notification('SIN NADA POR DESCARGAR',"Filtre por otros datos o No existen el campo en el archivo")
+                }
+            }
         }
-        else if(filter.itemCampo1.length === 0 && filter.itemValor1.length === 0 && filter.itemCampo2.length != 0 && filter.itemValor2.length != 0 && filter.itemValor3.length != 0){
-            let validateCampo2 = filter.itemCampo1;
-            let validateValor2 = filter.itemValor2;
-            let validateValor3 = filter.itemValor3;  
+        else if(filter.name.length === 0 && filter.identification.length != 0 && filter.municipality.length === 0 && filter.age.length === 0 ){
+            var resFilter =  arrayres.filter(data => data.identificacion === filter.identification)
+            if(resFilter.length === 0){
+                main.notification('2: SIN NADA POR DESCARGAR',"Filtre por otros datos o No existen el campo en el archivo")
+            }
+            else{
+                return resFilter
+            }  
+        }
+        else if(filter.name.length === 0 && filter.identification.length === 0 && filter.municipality.length != 0 && filter.age.length === 0){
+            var resFilter =  arrayres.filter(data => data.municipio === filter.municipality)
+            if(resFilter.length === 0){
+                main.notification('3: SIN NADA POR DESCARGAR',"Filtre por otros datos o No existen el campo en el archivo")
+            }
+            else{
+                return resFilter
+            }  
+        }
+        else if(filter.name.length === 0 && filter.identification.length === 0 && filter.municipality.length === 0 && filter.age.length != 0){
+            var resFilter =  arrayres.filter(data => data.edad === filter.age)
+            if(resFilter.length === 0 || resFilter.length === 'undefined'){
+                main.notification('4: SIN NADA POR DESCARGAR',"Filtre por otros datos o No existen el campo en el archivo")
+            }
+            else{
+                return resFilter
+            }
+        }
+        else if(filter.name.length != 0 && filter.identification.length != 0 && filter.municipality.length != 0 && filter.age.length != 0 ){
+            var resFilter =  arrayres.filter( 
+                data => data.primer_nombre === filter.name ||  data.segundo_nombre === filter.name 
+                ||  data.primer_apellido === filter.name ||  data.segundo_apellido === filter.name && data.identificacion === filter.identification 
+                && data.municipio === filter.municipality && data.edad === filter.age
+            );
+            if(resFilter.length === 0 || resFilter.length === 'undefined'){
+                main.notification('5: SIN NADA POR DESCARGAR',"Filtre por otros datos o No existen el campo en el archivo")
+            }
+            else{
+                return resFilter;
+            }
+        }
+        else if(filter.name.length != 0 || filter.identification.length != 0 || filter.municipality.length != 0 || filter.age.length != 0 ){
+            var resFilter =  arrayres.filter( 
+                data => data.primer_nombre === filter.name || data.segundo_nombre === filter.name 
+                ||  data.primer_apellido === filter.name ||  data.segundo_apellido === filter.name 
+                || data.identificacion === filter.identification 
+                || data.municipio === filter.municipality 
+                || data.edad === filter.age
+            );
+            if(resFilter === 'undefined'){
+
+            }
+            if(resFilter.length === 0 || resFilter.length === 'undefined'){
+                main.notification('6: SIN NADA POR DESCARGAR',"Filtre por otros datos o No existen el campo en el archivo")
+            }
+            else{
+                return resFilter;
+            }
+        }
+        else{
+            main.notification('7: Error de Campos',"No existe este modo de filtro.")
         }
     }
-    return arrayres;
 }
 
 //variables y funciones para descargar el archivo final excel
@@ -148,7 +217,6 @@ function downloadAsExcel(resUploadFileCompared) {
         SheetNames:['resUploadFileCompared']
     }
     const excelBuffer = XLSX.write(workbook, {bookType:'xlsx',type:'array'});
-    console.log(excelBuffer)
     saveExcel(excelBuffer, 'Filtro de base de datos')
 };
 

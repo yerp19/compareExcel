@@ -29,11 +29,9 @@ function createWindow () {
 function uploadFileCompared(comparator_file, file_compare){
     pathComparatorFile = comparator_file.path;
     pathFileCompare = file_compare.path;
-
+    console.log(pathComparatorFile, pathFileCompare )
     return {pathComparatorFile, pathFileCompare};
 }
-
-
 
 module.exports = {
     createWindow,

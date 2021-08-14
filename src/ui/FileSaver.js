@@ -1,4 +1,4 @@
-
+//saveAs
 var _global = typeof window === 'object' && window.window === window
   ? window : typeof self === 'object' && self.self === self
   ? self : typeof global === 'object' && global.global === global
