@@ -13,19 +13,21 @@ const fileCompare = document.getElementById('fileCompare');
 
 //otros filtros
 function filterData() {
-    const name = document.getElementById('name');
+    const tipeidentification = document.getElementById('tipeidentification');
     const identification = document.getElementById('identification');
-    const municipality = document.getElementById('municipality');
-    const age = document.getElementById('age');
+    const name = document.getElementById('name');
+    const lastname = document.getElementById('lastname');
+    const surname = document.getElementById('surname');
+    const secondsurname = document.getElementById('secondsurname');
+    const gender = document.getElementById('gender');
     var filter = {
-        name : name.value,
+        name : name.value, 
         identification: identification.value,
         municipality: municipality.value,
         age : age.value,
     }
     return filter;
 }
-
 
 //evento para enviar el formulario
 UploadForm.addEventListener('submit', async (e) => {
